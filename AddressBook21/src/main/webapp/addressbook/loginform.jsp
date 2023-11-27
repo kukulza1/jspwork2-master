@@ -14,7 +14,7 @@
 	    <form action="loginprocess1.jsp" method="post">
 	    	<table id="tbl_login">
 	    	<jsp:useBean id="addrBook" class="addressbook.AddrBook"/>
-	    		<% session.setAttribute("sbsession",addrBook.getUsername()); %>
+	    		<% //session.setAttribute("sbsession",addrBook.getUsername()); %>
 	    		<tr>
 	    			<td><label>이메일</label></td>
 	    		    <td><input type="text" name="email" required

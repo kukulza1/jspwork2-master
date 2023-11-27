@@ -13,7 +13,7 @@
     <%
       //로그인이 안된 경우 로그인하도록 알림창 띄우기
       String sessionId = null;
-     
+     //이름세션발급
      if((String)session.getAttribute("sbsession") != null){
     	 sessionId = (String)session.getAttribute("sbsession");
      }else{
@@ -28,7 +28,8 @@
 		<h2>주소 목록</h2>
 		<hr>
 		<p><!--<a href="addrForm.jsp">[주소추가]</a>&nbsp;&nbsp;-->
-		<span class="accent">(<%=session.getAttribute("sbsession") %>님)</span><a href="logout.jsp">[로그아웃]</a>
+		<span class="accent">(<%=session.getAttribute("session1") %>님)</span>
+		<a href="logout.jsp">[로그아웃]</a>
 		 </p>
 	    <table id="tbl_list">
 	    <thead>

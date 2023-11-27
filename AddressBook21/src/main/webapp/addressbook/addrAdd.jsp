@@ -15,7 +15,8 @@
 <%
     adDAO.addadr(addrBook); //주소추가
     //세션명에 유저이름넣어서 발급하기 회원가입후 자동로그인
-    session.setAttribute("sbsession",addrBook.getUsername());
+    session.setAttribute("session1",addrBook.getUsername());
+    session.setAttribute("sbsession",addrBook.getEmail());
 %>
   <div id="container">
 	<h2>등록 내용</h2>

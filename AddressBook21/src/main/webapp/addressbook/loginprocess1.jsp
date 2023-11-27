@@ -4,9 +4,11 @@
 <%
   String email = request.getParameter("email");
   boolean result = ab1.checkLogin(email);
-  
+  String name = ab1.getNameByEmail(email);
+   
   if(result){//이메일이 있으면 세션발급 (세션명-sbsession)
 	  session.setAttribute("sbsession",email);
+      session.setAttribute("session1", name);
        response.sendRedirect("addrList.jsp"); //주소록 목록으로 이동
   }else{
 	  out.println("<script>");
