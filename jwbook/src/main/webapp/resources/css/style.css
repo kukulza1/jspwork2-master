@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+/*공통*/
+#content{width: 80%; margin:30px auto; text-align: center;}
+h3{color:aquamarine;}
+ul li{list-style: none;}
+/*index페이지*/
+table,th,td{margin:0 auto; border: 1px solid #ccc;
+ padding:10px; 
+border-collapse:collapse; 
+text-align:center;}
+
+/*학생목록스타일*/
+ table,th,td{
+	 margin:0 auto;
+	 border:1px solid #ccc;
+	 padding: 10px;
+	 border-collapse: collapse;
+ }
+ /*학생등록스타일*/
+ form{width: 360px; margin:0 auto;}
+ ul li label{float: left; width: 80px;}
+ ul li input.birth{width: 166px;}
