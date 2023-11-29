@@ -1,0 +1,70 @@
+@charset "UTF-8";
+*{margin: 0; padding: 0;}
+#container{width: 90%; margin:30px auto 100px;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+
+/*header스타일*/
+header{height: 100px; background-color:aquamarine;}
+header #logo{width: 20%; float: left; line-height: 100px;}
+#logo h1 a{color:tomato; padding-left: 20px; font-style: italic;}
+header nav{width: 70%; float: right;}
+#topmenu{line-height: 100px;}
+#topmenu li{float: left; margin:0 20px;}
+#topmenu li a{color:black ;}
+#topmenu li a:hover{color:indigo;}
+
+/*footer스타일*/
+footer{height: 80px; border-top:2px solid #000;}
+#bottommenu{margin:10px 20px;}
+#bottommenu li{float: left; margin:0 20px; padding: 0 10px;
+border-right: 1.5px solid #ccc;}
+#bottom li a{color:#444;}
+#bottom li:last-child{border:none;}
+
+/*main스타일*/
+#main{margin:0 auto; text-align: center;}
+#main .main_img{margin:16px;}
+#main .main_img img{border-radius: 5px;}
+
+/*회원목록스타일*/
+#memberlist{width: 900px; margin:20px auto;}
+#memberlist table{width: 900px; margin:20px auto; border-collapse: collapse;}
+#memberlist table th, td, tr{border: 1px solid black; 
+ text-align: center;}
+
+table th, td{padding: 10px;}
+table thead{text-align: center; background: #ccc;}
+
+/*회원가입스타일*/
+#join{width: 500px; margin:20px auto;}
+#join form{margin:20px auto;}
+#join fieldset{margin-bottom:16px;}
+form ul li{margin:20px;}
+form .button{margin-top:16px;}
+form .button button{padding: 5px;}
+form label{width: 120px; float: left; padding-left: 21px;}
+form input{padding: 3px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
