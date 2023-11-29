@@ -32,8 +32,8 @@ public class StudentContoller extends HttpServlet {
 		//  http://localhost8080/student/studentlist.jsp
 		//맨뒤경로 추출 - lastIndexof('/'), subString(5)
 		String uri=request.getRequestURI();
-		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(uri);
+		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(uri.lastIndexOf("/"));
 		System.out.println(command);
 		
