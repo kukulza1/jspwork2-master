@@ -12,7 +12,7 @@
   
 	   <div id="container">
 	   <section id="main">
-	   <h2>안녕하세요. kh-it커뮤니티입니다</h2>
+	   <h2>안녕하세요. KH-IT커뮤니티입니다</h2>
 	   <div class="main_img">
 	    <img src="resources/img/fff.jpg" alt="배경">
 	   </div>

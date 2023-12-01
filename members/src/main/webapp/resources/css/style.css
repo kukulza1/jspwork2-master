@@ -29,6 +29,7 @@ border-right: 1.5px solid #ccc;}
 
 /*회원목록스타일*/
 #memberlist{width: 900px; margin:20px auto;}
+#memberlist .logout{text-align: center;}
 #memberlist table{width: 900px; margin:20px auto; border-collapse: collapse;}
 #memberlist table th, td, tr{border: 1px solid black; 
  text-align: center;}
@@ -46,12 +47,58 @@ form .button button{padding: 5px;}
 form label{width: 120px; float: left; padding-left: 21px;}
 form input{padding: 3px;}
 
+/*회원정보스타일*/
+
+#memberview{width: 500px; margin:20px auto;}
+#memberview table{width: 500px; margin:20px auto; border-collapse: collapse;}
+#memberlist table th, td, tr{border: 1px solid black; 
+ text-align: center;}
+
+table th, td{padding: 10px;}
+table thead{text-align: center; background: #ccc;}
+
+#login{width: 400px; margin:30px auto 100px;}
+#login form{margin: 30px auto;}
+#login form ul li{margin:40px 20px;}
+
+#login .error{color: red;}
+#login button{width: 50%; padding: 10px 0; float:left;}
+
+/*게시글목록스타일*/
+
+#boardlist{width: 900px; margin:20px auto;}
+#boardlist .logout{text-align: center;}
+#boardlist table{width: 900px; margin:20px auto; border-collapse: collapse;}
+#boardlist table th, td, tr{border: 1px solid black; 
+ text-align: center;}
+#boardlsit button{padding: 10px;}
+
+/*글쓰기폼*/
+#writeform{width: 550px; margin:20px auto;}
+#writeform table{width: 550px; margin:20px auto; border-collapse: collapse;}
+#writeform table th, td{border: 1px solid black; border-collapse: collapse;
+ text-align: center;}
+#writeform button{padding: 10px;}
+#writeform input{width: 540px; height: 25px; padding: 5px;}
+#writeform textarea{width: 540px; height: 300px; padding: 5px;}
 
 
+#boardview{width: 550px; margin:20px auto;}
+#boardview table{width: 550px; margin:20px auto; border-collapse: collapse;}
+#boardview table th, td{border: 1px solid black; border-collapse: collapse;
+ text-align: center;}
+#boardview button{padding: 10px;}
+#boardview input{width: 540px; height: 25px; padding: 5px;}
+#boardview textarea{width: 540px; height: 300px; padding: 5px;}
+#replyform textarea{height: 100px;}
 
-
-
-
+/*댓글영역스타일*/
+#boardview .reply{border-top:1px dotted #ccc;margin:10px ;}
+.reply p{margin:10px ;}
+.reply p:nth-of-type(1){white-space: pre-line; line-height: 1.5;}
+#replyform text{font-size: 0.9em; color:#444;}
+.replylogin{background-color: #eee; margin:10px 0; padding: 16px;
+           text-align: center;}
 
 
 
