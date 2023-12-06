@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 
+
 //import java.io.PrintWriter;
 import java.util.List;
 
@@ -25,8 +26,8 @@ import reply.ReplyDAO;
 public class Maincontroller extends HttpServlet {
 	private static final long serialVersionUID = 10L;
       MemberDAO mdao;
-     BoardDAO bdao;
-     ReplyDAO rdao;
+      BoardDAO bdao;
+      ReplyDAO rdao;
     public Maincontroller() {
     	  mdao = new MemberDAO();
     	  bdao=new BoardDAO();
@@ -53,12 +54,23 @@ public class Maincontroller extends HttpServlet {
 		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(command);
 		
+		
 		String nextPage = "";
 		
 		HttpSession sst = request.getSession();
 		//viwe에출력객체생성
 		//PrintWriter out = response.getWriter();
-		if(command.equals("/memberlist.do")) {
+		if(command.equals("/main.do")) {
+			//메인페이지에 게시글보내기
+			List<Board> bl= bdao.getblist();
+			System.out.println(bl.size()+"개");
+			request.setAttribute("bl1",bl);
+			if(bl.size() >=3) {
+			Board[] newBoard= {bl.get(0),bl.get(1),bl.get(2)};						
+			request.setAttribute("bl1",newBoard);			
+			}
+			nextPage="/main.jsp";		
+		}else if(command.equals("/memberlist.do")) {
 			//회원정보를 db에서조회
 			List<Member> ml= mdao.getAllmember();
 			request.setAttribute("ml2",ml);		
@@ -121,6 +133,7 @@ public class Maincontroller extends HttpServlet {
 			
 			
 			
+			
 		}else if(command.equals("/logout.do")) {
 			sst.invalidate();//모든세션삭제
 			nextPage="/index.jsp";
@@ -168,8 +181,6 @@ public class Maincontroller extends HttpServlet {
 			Board b = bdao.getboard(bno);
 			
 			//댓글목록보기
-			
-			
 			request.setAttribute("b", b);				
 			
 			nextPage="/board/updateboardform.jsp";

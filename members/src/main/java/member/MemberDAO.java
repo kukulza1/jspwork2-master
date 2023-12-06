@@ -108,7 +108,28 @@ public class MemberDAO {
     	   
     	   return false;
        }
-       
+       //id중복검사
+       public boolean getDuplicatedid(String id) {
+    	   boolean result=false;
+    	   conn=JDBCUtil.getConnection();
+    	  
+    	   try {
+    		   String sql="select decode(count(*), 1, 'true', 'false') as result1 from member "
+    	    	   		+ " where memid = ? ";
+			pstmt =conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result= rs.getBoolean("result1");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+    	   
+    	   return result;
+       }
        
 }
 

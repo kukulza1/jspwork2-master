@@ -1,6 +1,8 @@
 package member;
 
 import java.io.Serializable;
+
+
 import java.sql.Timestamp;
 
 public class Member implements Serializable  {
@@ -9,7 +11,7 @@ public class Member implements Serializable  {
 	private  int mno;
 	private String memid;
 	private String pw;
-	private String pw2;
+	
 	private String name;
 	private String email;
 	private String gender;
@@ -57,12 +59,7 @@ public class Member implements Serializable  {
 	public void setJoinDate(Timestamp joinDate) {
 		this.joinDate = joinDate;
 	}
-	public String getPw2() {
-		return pw2;
-	}
-	public void setPw2(String pw2) {
-		this.pw2 = pw2;
-	}
+	
 	
 	
 
