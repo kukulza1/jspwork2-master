@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인페이지</title>
-<link rel ="stylesheet"    href="../resource/css/joinstyle.css">
+<link rel ="stylesheet"    href="resource/css/joinstyle.css">
 </head>
 <body>
 <div id="container">

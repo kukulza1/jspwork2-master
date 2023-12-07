@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class MemberVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private  int mno;
+	
 	private String id;
 	private String passwd;
 	private String name;
@@ -42,12 +42,7 @@ public class MemberVO implements Serializable {
 	public void setAddress4(String address4) {
 		this.address4 = address4;
 	}
-	public int getMno() {
-		return mno;
-	}
-	public void setMno(int mno) {
-		this.mno = mno;
-	}
+	
 	public String getId() {
 		return id;
 	}

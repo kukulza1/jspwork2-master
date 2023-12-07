@@ -17,8 +17,8 @@ public class MemberDAO {
 	  
 	 
 	  try {
-		  String sql = "insert into spmember(mno,id,passwd,name,email,tel,address1,address2,address3,address4) "
-		  		+ "values(seqq.nextVal,?, ?, ?, ? , ? , ? , ? , ? , ?)" ; 
+		  String sql = "insert into spmember(id,passwd,name,email,tel,address1,address2,address3,address4) "
+		  		+ "values(?, ?, ?, ? , ? , ? , ? , ? , ?)" ; 
 		pstmt =conn.prepareStatement(sql);
 		pstmt.setString(1, m.getId());
 		pstmt.setString(2, m.getPasswd());
@@ -38,4 +38,31 @@ public class MemberDAO {
 		JDBCUtil.close(conn, pstmt);
 	}
   }
+  
+  
+  public boolean checklogin22(MemberVO mv) {
+	   conn=JDBCUtil.getConnection();
+	 
+	   try {
+		   String sql ="select * from spmember where id =? and passwd=? ";
+		pstmt =conn.prepareStatement(sql);
+		pstmt.setString(1, mv.getId());
+		pstmt.setString(2, mv.getPasswd());
+   	rs =pstmt.executeQuery();
+   	if(rs.next()) {
+   		
+   	return true;
+   	}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}finally {
+		JDBCUtil.close(conn, pstmt, rs);
+	}
+	   
+	   return false;
+  }
+  
+  
+  
+  
 }
