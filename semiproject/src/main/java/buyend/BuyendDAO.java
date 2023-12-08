@@ -18,7 +18,7 @@ public class BuyendDAO {
     	 conn=JDBCUtil.getConnection();
     	 List<BuyendVO> BA = new ArrayList<>();
     	 try {
-    		 String sql = "select*from buyend  ";
+    		 String sql = "select*from buyend where id=? ";
 			pstmt = conn.prepareStatement(sql);
 			rs= pstmt.executeQuery();
 			
@@ -26,7 +26,7 @@ public class BuyendDAO {
 				BuyendVO ss = new BuyendVO();
 				ss.setProduct(rs.getString("product"));
 				ss.setOrderdate(rs.getTimestamp("orderdate"));
-				ss.setOrdernum(rs.getInt("ordernum"));
+				ss.setOrderNo(rs.getInt("orderNo"));
 				ss.setPrice(rs.getInt("price"));
 				ss.setId(rs.getString("id"));
 				BA.add(ss);
@@ -43,13 +43,14 @@ public class BuyendDAO {
     	 conn=JDBCUtil.getConnection();
     	  
  		try {
- 			String sql = " insert into buyend(product,ordernum,price,id) "
- 					+ " values( ?, ?, ?, ?')" ;
+ 			String sql = " insert into buyend(receipt, product, orderno, price, id) "
+ 					+ " values(?, ?, ?, ?,  ? )" ;
 			pstmt =conn.prepareStatement(sql);
-			pstmt.setString(1, b.getProduct());
-			pstmt.setInt(2, b.getOrdernum());
-			pstmt.setInt(3, b.getPrice());
-			pstmt.setString(4, b.getId());
+			pstmt.setString(1, b.getReceipt());
+			pstmt.setString(2, b.getProduct());
+			pstmt.setInt(3, b.getOrderNo());
+			pstmt.setInt(4, b.getPrice());
+			pstmt.setString(5, b.getId());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

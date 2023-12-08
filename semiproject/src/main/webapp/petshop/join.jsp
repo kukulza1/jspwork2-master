@@ -80,7 +80,7 @@
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td><input type="text" name=tel></td>
+                                    <td><input type="text" name=phone></td>
                                 </tr>
                                 <tr>
                                     <th>E-mail</th>
@@ -88,9 +88,9 @@
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td><input type="text" size="6" name="address1"> - <input type="text" size="6"name="address2"><span>Zip Code</span></td>
-                                    <td><input type="text" size="50" name="address3"><span>Address</span></td>
-                                    <td><input type="text" size="50" name="address4"><span>Detailed Address</span></td>
+                                    <td><input type="text" size="6" name="zip_code"> - <input type="text" size="6"name="zip_code2"><span>Zip Code</span></td>
+                                    <td><input type="text" size="50" name="address"><span>Address</span></td>
+                                    <td><input type="text" size="50" name="detailAddress"><span>Detailed Address</span></td>
                                 </tr>
                             </tbody>
                         </table>

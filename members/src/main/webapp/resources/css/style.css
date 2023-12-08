@@ -75,7 +75,13 @@ table thead{text-align: center; background: #ccc;}
 #boardlist table{width: 900px; margin:20px auto; border-collapse: collapse;}
 #boardlist table th, td, tr{border: 1px solid black; 
  text-align: center;}
-#boardlsit button{padding: 10px;}
+#boardlist button{padding: 10px;}
+#boardlist .pagination {text-align: center;}
+.pagination a{margin:5px;}
+
+
+
+
 
 /*글쓰기폼*/
 #writeform{width: 550px; margin:20px auto;}

@@ -20,10 +20,10 @@ import member.MemberVO;
 public class Maincontroller extends HttpServlet {
 	private static final long serialVersionUID = 22L;
     BuyendDAO bdao;   
-	MemberDAO mdao2;
+	MemberDAO mdao;
     public Maincontroller() {
         bdao = new BuyendDAO();
-        mdao2 = new MemberDAO();
+        mdao = new MemberDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,22 +61,21 @@ public class Maincontroller extends HttpServlet {
 			String pw = request.getParameter("passwd");
 			String name = request.getParameter("name");
 			String email = request.getParameter("email");
-			String tel = request.getParameter("tel");
-			String address1 = request.getParameter("address1");
-			String address2 = request.getParameter("address2");
-			String address3 = request.getParameter("address3");
-			String address4 = request.getParameter("address4");
+			String phone = request.getParameter("phone");
+			String zip_code = request.getParameter("zip_code");	
+			String address = request.getParameter("address");
+			String address2 = request.getParameter("detailAddress");
 			
 			m.setId(id);
 			m.setPasswd(pw);
 			m.setName(name);
 			m.setEmail(email);
-			m.setTel(tel);
-			m.setAddress1(address1);
-			m.setAddress2(address2);
-			m.setAddress3(address3);
-			m.setAddress4(address4);
-			mdao2.insertmember(m);
+			m.setPhone(phone);
+			m.setZip_code(zip_code);		
+			m.setAddress(address);
+			m.setDetailAddress(address2);
+			
+			mdao.insertmember(m);
 			nextPage = "/petshop/buyend.jsp";
 			
 		}else if(command.equals("/loginpage.do")) {
@@ -88,7 +87,7 @@ public class Maincontroller extends HttpServlet {
 			mv.setId(id);
 			mv.setPasswd(passwd);
 			
-			boolean result = mdao2.checklogin22(mv);
+			boolean result = mdao.checklogin22(mv);
 			if(result) {
 				System.out.println("로그인성공");
 				session.setAttribute("sessionid", id);

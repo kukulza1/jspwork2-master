@@ -47,6 +47,15 @@
                     <a href=""><button>4</button></a>
                     <a href=""><button class="arrow">></button></a>
                 </div>
+                <c:forEach var="i" begin="1" end="${endp}">
+				<c:if test="${page == i}">
+					<a href="/boardlist.do?pageNum=${i}"><b>${i}</b></a>
+				</c:if>
+				<c:if test="${page != i}">
+					<a href="/boardlist.do?pageNum=${i}">${i}</a>
+				</c:if>
+			</c:forEach>
+                
 
                 <a href="/">
                    <button id="toList" >목록으로</button>

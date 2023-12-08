@@ -126,5 +126,96 @@ public class BoardDAO {
 			JDBCUtil.close(conn, pstmt);
 		}
     }
+    public List<Board> getblist(int page){
+    	conn=JDBCUtil.getConnection();
+		List<Board> bl= new ArrayList<>();
+	   try {
+		   String sql = "select *  "
+	   + "from (select rownum as RN, bo.* from(select * from board order by bno desc) bo) "
+		   		+ "where RN >= ? and RN <= ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, (page-1)*10+1);
+		pstmt.setInt(2, page*10);
+		rs= pstmt.executeQuery();
+		while(rs.next()) {
+			Board board =new Board();
+			board.setBno(rs.getInt("bno"));
+			board.setTitle(rs.getString("title"));
+			board.setContent(rs.getString("content"));
+			board.setCreatedate(rs.getTimestamp("createdate"));
+			board.setModifydate(rs.getTimestamp("modifydate"));
+			board.setHit(rs.getInt("hit"));
+			board.setFilename(rs.getString("filename"));
+			board.setMemid(rs.getString("memid"));
+			bl.add(board);
+		}						
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}finally {
+		JDBCUtil.close(conn, pstmt, rs);
+	}
+    	
+		return bl;
+    }
+    
+    //데이터가 늘어날경우 페이지를 자동으로 늘리기위함
+    public int getboardc() {
+    	int total=0;
+    		
+	   try {
+		   conn=JDBCUtil.getConnection();
+		   String sql = "select count(*) as total from board ";
+		pstmt = conn.prepareStatement(sql);
+		rs= pstmt.executeQuery();
+		if(rs.next()) {
+			total = rs.getInt("total");
+		}						
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}finally {
+		JDBCUtil.close(conn, pstmt, rs);
+	}
+    	
+		return total;
+    }
+    public List<Board> getblist(String field, String kw, int page){
+    	conn=JDBCUtil.getConnection();
+		List<Board> bl= new ArrayList<>();
+	   try {
+		   String sql = "select *  "
+		   		+ "   from (select rownum as RN, bo.*   "
+		   		+          "  from(select * from board   "
+		   		+          "  where  " + field +  " like ?  order by bno desc) bo)  "
+		   		
+		   		+ "		   where RN >= ? and RN <= ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, "%" +kw + "%");
+		pstmt.setInt(2, (page-1)*10 +1);
+		pstmt.setInt(3, page*10 );
+		rs= pstmt.executeQuery();
+		while(rs.next()) {
+			Board board =new Board();
+			board.setBno(rs.getInt("bno"));
+			board.setTitle(rs.getString("title"));
+			board.setContent(rs.getString("content"));
+			board.setCreatedate(rs.getTimestamp("createdate"));
+			board.setModifydate(rs.getTimestamp("modifydate"));
+			board.setHit(rs.getInt("hit"));
+			board.setFilename(rs.getString("filename"));
+			board.setMemid(rs.getString("memid"));
+			bl.add(board);
+		}						
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}finally {
+		JDBCUtil.close(conn, pstmt, rs);
+	}
+    	
+		return bl;
+    }
+    }
 
-}
+

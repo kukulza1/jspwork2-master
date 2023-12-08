@@ -137,14 +137,77 @@ public class Maincontroller extends HttpServlet {
 		}else if(command.equals("/logout.do")) {
 			sst.invalidate();//모든세션삭제
 			nextPage="/index.jsp";
+			
 		}
+		
+		
+		
 		//게시판
 		if(command.equals("/boardlist.do")) {
-			List<Board> bList = bdao.getblist();
-			request.setAttribute("bList", bList);
-			nextPage="/board/boardlist.jsp";
-		}else if(command.equals("/writeform.do")) {
+			//페이지 처리
+			String pageNum = request.getParameter("pageNum");
+			if(pageNum == null) { //페이지 번호를 클릭하지 않았을때 기본값
+				pageNum = "1";
+			}
+			//현재 페이지
+			int currentPage = Integer.parseInt(pageNum);
+			//페이지당 게시글 수 = 10(pageSize)
+			int pageSize = 10;
+			//페이지당 게시글 수 - 10개로 설정(pageSize)
+			//1페이지의 첫번째 행(startRow) : 1번,  1페이지 : 1~10, 2페이지 : 11~20
+			int startRow = (currentPage-1)*pageSize + 1;
+			//시작페이지(StartPage) - 12행 - 2페이지, 22행 - 3페이지
+			int startPage = startRow / pageSize + 1;
 			
+			//종료(끝) 페이지 : (전체 게시글 총 수 / 페이지 당 개수)
+			int totalRow = bdao.getboardc();
+			int endPage = totalRow /pageSize;
+			//페이지당 개수(10)로 나누어 떨어지지 않는 경우
+			endPage = (totalRow % pageSize == 0) ? endPage : endPage + 1;
+			
+			//검색 처리
+			String _field = request.getParameter("field"); //임시로 저장
+			String _kw = request.getParameter("kw");
+			
+			String field = "";
+			String kw ="";
+			
+			//null 처리
+			if(_field != null) { //검색값이 있는 경우
+				field = _field;
+			}else { //검색값이 없는 경우(디폴트)
+				field = "title";
+			}
+			if(_kw != null) { //검색어가 있는경우
+				kw = _kw;
+			}else { //검색어가 없는경우
+				kw = "";
+			}
+			
+			//페이지 처리 목록 매서드 호출
+			//List<Board> boardList = bdao.getblist(currentPage);
+			
+			//검색 처리
+			//List<Board> boardList = bdao.getblist(field, kw) ;
+			
+			//페이지와 검색처리
+			List<Board> bl = bdao.getblist(field, kw, currentPage);
+			
+			//모델로 생성
+			request.setAttribute("bList", bl);
+			
+			request.setAttribute("page", currentPage); //현재페이지
+			request.setAttribute("startpage", startPage); //시작페이지
+			request.setAttribute("endp", endPage); //마지막페이지
+			
+			request.setAttribute("field", field);  //검색어
+			request.setAttribute("kw", kw);  //검색어
+			
+			nextPage = "/board/boardlist.jsp";
+			
+			
+			
+		}else if(command.equals("/writeform.do")) {	
 			nextPage = "/board/writeform.jsp";
 			
 		}else if(command.equals("/writer.do")) {
