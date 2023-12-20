@@ -8,6 +8,7 @@
  <web-resource-collection>
   <web-resource-name>members</web-resource-name>
   <url-pattern>/memberlist.do</url-pattern>
+ 
   <http-method>GET</http-method>
  </web-resource-collection>
  <auth-constraint>

@@ -47,12 +47,14 @@ public class BoardDAO {
     	conn=JDBCUtil.getConnection();
     	 
  		try {
- 			String sql = "insert into board(bno, title, content, memid)  "
- 					+ "  values(seq_bno.nextval, ? , ? , ?) ";
+ 			String sql = "insert into board(bno, title, content, filename, memid)  "
+ 					+ "  values(seq_bno.nextval, ? , ? , ?, ?) ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, bb.getTitle());
 			pstmt.setString(2, bb.getContent());
-			pstmt.setString(3, bb.getMemid());
+			pstmt.setString(3, bb.getFilename());
+			pstmt.setString(4, bb.getMemid());
+			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -106,19 +108,40 @@ public class BoardDAO {
 			JDBCUtil.close(conn, pstmt);
 		}
     }
+    //파일이 없는경우 게시글 수정
+    public void updatenofileboard(Board b) {
+    	Timestamp now = new Timestamp(System.currentTimeMillis());
+    	conn=JDBCUtil.getConnection();
+    		   	
+    	try {
+    	String sql = "update board set title = ?, content = ? , modifydate = ? "
+    	                  + " where bno = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getContent());	
+			pstmt.setTimestamp(3, now);		
+			pstmt.setInt(4, b.getBno());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+    }
+    
     public void updateboard(Board b) {
     	Timestamp now = new Timestamp(System.currentTimeMillis());
     	conn=JDBCUtil.getConnection();
     		   	
     	try {
-    	String sql = "update board set title=?, content=? , modifydate=? "
-    	                  + " where bno=?";
+    	String sql = "update board set title = ?, content = ? , modifydate = ?, "
+    	                  + "filename = ? where bno = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, b.getTitle());
-			pstmt.setString(2, b.getContent());
-		
+			pstmt.setString(2, b.getContent());	
 			pstmt.setTimestamp(3, now);
-			pstmt.setInt(4, b.getBno());
+			pstmt.setString(4, b.getFilename());
+			pstmt.setInt(5, b.getBno());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

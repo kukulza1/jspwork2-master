@@ -88,7 +88,7 @@
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td><input type="text" size="6" name="zip_code"> - <input type="text" size="6"name="zip_code2"><span>Zip Code</span></td>
+                                    <td><input type="text" size="6" name="zip_code"><span>Zip Code</span></td>
                                     <td><input type="text" size="50" name="address"><span>Address</span></td>
                                     <td><input type="text" size="50" name="detailAddress"><span>Detailed Address</span></td>
                                 </tr>

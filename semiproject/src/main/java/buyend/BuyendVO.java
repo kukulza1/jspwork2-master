@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class BuyendVO implements Serializable{
 
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 117L;
 	
 	private String receipt;
 	
@@ -19,6 +19,8 @@ public class BuyendVO implements Serializable{
 	private int price ;
 	
 	private String id;
+	
+	
 
 	
 	

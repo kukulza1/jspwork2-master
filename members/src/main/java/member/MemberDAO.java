@@ -1,6 +1,8 @@
 package member;
 
 import java.sql.Connection;
+
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,7 +89,30 @@ public class MemberDAO {
 		}
     	   return m;
        }
-       public boolean checklogin(Member m) {
+       //로그인 인증(객체로 반환)
+       public Member checkLogin(Member m) {
+    	   conn=JDBCUtil.getConnection();
+    	  
+    	   try {
+         String sql ="select * from member where memid =? and pw=? ";
+			pstmt =conn.prepareStatement(sql);
+			pstmt.setString(1, m.getMemid());
+			pstmt.setString(2, m.getPw());
+	    	rs =pstmt.executeQuery();
+	    	if(rs.next()) { 
+	    		//이름을 db에서 가져옴
+	    		m.setName(rs.getString("name"));
+	    	}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return m;
+       }
+       
+       
+      /* public boolean checklogin(Member m) {
     	   conn=JDBCUtil.getConnection();
     	 
     	   try {
@@ -107,7 +132,7 @@ public class MemberDAO {
 		}
     	   
     	   return false;
-       }
+       }*/
        //id중복검사
        public boolean getDuplicatedid(String id) {
     	   boolean result=false;

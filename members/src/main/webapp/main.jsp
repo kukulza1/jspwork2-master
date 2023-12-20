@@ -22,7 +22,7 @@
 	   <div class="newboard">
 	      <h3>최신 게시글</h3>
 	      <c:forEach items="${bl1}" var="bb">
-	      <p><a href="/boardlsit.do?bno=${bb.bno}">${bb.title}</a>(글쓴이: ${bb.memid},작성일:)
+	      <p><a href="/boardview.do?bno=${bb.bno}">${bb.title}</a>(글쓴이: ${bb.memid},작성일:)
 	      <fmt:formatDate value="${bb.createdate}"
                        pattern="yyyy-MM-dd HH:mm:ss"/>
 	      </p>

@@ -1,7 +1,8 @@
-package controller;
+/*package controller;
 
 import java.io.IOException;
 
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,19 +12,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import buyend.BuyendDAO;
 import buyend.BuyendVO;
 import member.MemberDAO;
 import member.MemberVO;
+import notice.NoticeDAO;
+import notice.NoticeVO;
 
-@WebServlet("*.do")
+@WebServlet("/member.do")
 public class Maincontroller extends HttpServlet {
 	private static final long serialVersionUID = 22L;
-    BuyendDAO bdao;   
-	MemberDAO mdao;
+    BuyendDAO bDAO;   
+	MemberDAO mDAO;
+	NoticeDAO nDAO;
     public Maincontroller() {
-        bdao = new BuyendDAO();
-        mdao = new MemberDAO();
+        bDAO = new BuyendDAO();
+        mDAO = new MemberDAO();
+        nDAO= new NoticeDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,24 +45,22 @@ public class Maincontroller extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		String uri= request.getRequestURI();
-		System.out.println(uri);
 		String command = uri.substring(uri.lastIndexOf("/"));
 		String nextPage = "";
-		System.out.println(command);
 		
 		HttpSession session = request.getSession();
 		
 		
 		
-		if(command.equals("/buyend.do")) {
-			List<BuyendVO> buyend = bdao.getlistAll();
-			request.setAttribute("buyend",buyend);
-			nextPage="/petshop/buyend.jsp";
-		}
+		if(command.equals("/memberlist.do")) {//관리자 회원목록보기
+			List<MemberVO> ml = mDAO.getAllmember();
+			request.setAttribute("ml", ml);		
+			nextPage="/memberlist.jsp";
 			
-		if(command.equals("/join.do")) {
+		}else if(command.equals("/join.do")) { //회원가입페이지로 이동
 			nextPage = "/petshop/join.jsp";
-			}else if(command.equals("/memberjoin.do")) {
+			
+		}else if(command.equals("/memberjoin.do")) { //회원가입 db넣기
 			
 			MemberVO m = new MemberVO();
 			
@@ -75,10 +82,10 @@ public class Maincontroller extends HttpServlet {
 			m.setAddress(address);
 			m.setDetailAddress(address2);
 			
-			mdao.insertmember(m);
+			mDAO.insertmember(m);
 			nextPage = "/petshop/buyend.jsp";
 			
-		}else if(command.equals("/loginpage.do")) {
+		}else if(command.equals("/loginpage.do")) { //로그인
 			nextPage="/petshop/loginpage.jsp";
 		}else if(command.equals("/login.do")) {
 			String id = request.getParameter("id");
@@ -87,7 +94,7 @@ public class Maincontroller extends HttpServlet {
 			mv.setId(id);
 			mv.setPasswd(passwd);
 			
-			boolean result = mdao.checklogin22(mv);
+			boolean result = mDAO.checklogin22(mv); //로그인 체크
 			if(result) {
 				System.out.println("로그인성공");
 				session.setAttribute("sessionid", id);
@@ -115,3 +122,4 @@ public class Maincontroller extends HttpServlet {
 	}
 
 }
+*/

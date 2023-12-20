@@ -1,10 +1,7 @@
 package controller;
 
 import java.io.IOException;
-
-
-
-//import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,12 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import board.Board;
 import board.BoardDAO;
 import member.Member;
 import member.MemberDAO;
 import reply.Reply;
 import reply.ReplyDAO;
+import voter.Voter;
+import voter.VoterDAO;
 
 @WebServlet("*.do")// */*이하의 경로에서 do로끝나는확장자는 모두허용
 public class Maincontroller extends HttpServlet {
@@ -28,10 +30,13 @@ public class Maincontroller extends HttpServlet {
       MemberDAO mdao;
       BoardDAO bdao;
       ReplyDAO rdao;
+      VoterDAO vdao;
+     
     public Maincontroller() {
     	  mdao = new MemberDAO();
     	  bdao=new BoardDAO();
     	  rdao = new ReplyDAO();
+    	  vdao= new VoterDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,15 +74,18 @@ public class Maincontroller extends HttpServlet {
 			Board[] newBoard= {bl.get(0),bl.get(1),bl.get(2)};						
 			request.setAttribute("bl1",newBoard);			
 			}
-			nextPage="/main.jsp";		
+			nextPage="/main.jsp";	
+			
 		}else if(command.equals("/memberlist.do")) {
 			//회원정보를 db에서조회
 			List<Member> ml= mdao.getAllmember();
 			request.setAttribute("ml2",ml);		
 			//이동할페이지
-			nextPage = "/member/memberlist.jsp";		
+			nextPage = "/member/memberlist.jsp";	
+			
 		}else if(command.equals("/memberjoin.do")) {
 			nextPage = "/member/memberjoin.jsp";
+			
 		}else if(command.equals("/insertmember.do")) {
 			//빈회원 객체 생성
 			Member m = new Member();
@@ -94,6 +102,11 @@ public class Maincontroller extends HttpServlet {
 			m.setEmail(email);
 			m.setGender(gender);
 			mdao.insertmember(m);
+			
+			//회원가입후 자동로그인
+			sst.setAttribute("sbsession",m.getMemid()); //아이디를 가져와서 세션이름발급
+			sst.setAttribute("sessionname",m.getName()); //성명을가져와서 sessionname 발급
+					
 			nextPage = "index.jsp";	
 			
 		}else if(command.equals("/memberview.do")) {
@@ -115,33 +128,28 @@ public class Maincontroller extends HttpServlet {
 			
 			Member m = new Member();
 			m.setMemid(id);
-			m.setPw(pw);
-			
+			m.setPw(pw);			
 			//로그인인증
-			boolean result =  mdao.checklogin(m);
-			if(result) {//result가 참이면 세션발급
+			Member result =  mdao.checkLogin(m);
+			
+			String name = result.getName();
+			if(name != null) {//result가 참이면 세션발급
 				sst.setAttribute("sbsession", id);
+				sst.setAttribute("sessionname", name);
 				//로그인 후 페이지 이동
 				nextPage="/index.jsp";
 			}else {
 				String errora="아이디나 비밀번호를 다시 확인해주세요";
 				request.setAttribute("errora", errora);
 				nextPage="/member/loginform.jsp";
-				System.out.println("에러");
-			
+				System.out.println("에러");			
 			}
-			
-			
-			
-			
+												
 		}else if(command.equals("/logout.do")) {
 			sst.invalidate();//모든세션삭제
-			nextPage="/index.jsp";
-			
+			nextPage="/index.jsp";			
 		}
-		
-		
-		
+						
 		//게시판
 		if(command.equals("/boardlist.do")) {
 			//페이지 처리
@@ -211,15 +219,40 @@ public class Maincontroller extends HttpServlet {
 			nextPage = "/board/writeform.jsp";
 			
 		}else if(command.equals("/writer.do")) {
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
 			
+			
+		
+			String realForder ="C:\\jspwork2-master\\members\\src\\main\\webapp\\upload";
+			int maxsize = 10*1024*1024; //1000
+			String enctype = "utf-8"; //파일이름 한글인코딩
+			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
+			
+			//5가지인자
+			MultipartRequest multi = new MultipartRequest(request,realForder
+					  ,maxsize,enctype,policy);
+			Enumeration<?> files = multi.getFileNames();
+			
+			String filename = "";
+			while(files.hasMoreElements()) { //파일명이 있는동안반복
+				String userfilename = (String) files.nextElement();
+				
+				//원본파일 이름
+				//String originalFilename = multi.getOriginalFileName(userfilename);
+				
+					//실제저장될 이름
+					filename = multi.getFilesystemName(userfilename);					
+			}
+					
+			String title = multi.getParameter("title");
+			String content = multi.getParameter("content");
+		
 			String sid = (String) sst.getAttribute("sbsession");
 			//DB에 저장
 			Board b = new Board();
 			b.setTitle(title);
 			b.setContent(content);
 			b.setMemid(sid);
+			b.setFilename(filename);
 			
 			bdao.insertwrite(b);
 			
@@ -227,11 +260,27 @@ public class Maincontroller extends HttpServlet {
 		}else if(command.equals("/boardview.do")) {
 			int bno = Integer.parseInt(request.getParameter("bno"));
 			Board bb = bdao.getboard(bno);
+			
+			String id = (String) sst.getAttribute("sbsession");
+						//좋아요 개수 해당 개시글의 개수를 출력
+			int votecount =  vdao.votecount(bno);
+			
+		    //하트상태변경
+			boolean sw = false;
+			int result = vdao.checkvoter(bno, id);
+			if(result == 0 ) {
+				sw = true;
+			}else {
+				sw = false;
+			}
+			
 			List<Reply> rl =  rdao.getreplylist(bno);
 			//모델생성해서뷰로보내기
+			 
+			request.setAttribute("votecount", votecount);
 			request.setAttribute("bb1", bb);
 			request.setAttribute("rl1", rl);
-			
+			request.setAttribute("sw", sw);
 			nextPage="/board/boardview.jsp";
 		}else if(command.equals("/deleteboard.do")) {
 			int bno = Integer.parseInt(request.getParameter("bno"));
@@ -249,16 +298,65 @@ public class Maincontroller extends HttpServlet {
 			nextPage="/board/updateboardform.jsp";
 			
 		}else if(command.equals("/updateboard.do")){
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			int bno = Integer.parseInt(request.getParameter("bno"));
 			
+			String realForder ="C:\\jspwork2-master\\members\\src\\main\\webapp\\upload";
+			int maxsize = 10*1024*1024; //1000
+			String enctype = "utf-8"; //파일이름 한글인코딩
+			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
+			
+			//5가지인자
+			MultipartRequest multi = new MultipartRequest(request,realForder
+					  ,maxsize,enctype,policy);
+			Enumeration<?> files = multi.getFileNames();
+			
+			String filename = "";
+			while(files.hasMoreElements()) { //파일명이 있는동안반복
+				String userfilename = (String) files.nextElement();
+				
+				//원본파일 이름
+				//String originalFilename = multi.getOriginalFileName(userfilename);
+				
+					//실제저장될 이름
+			filename = multi.getFilesystemName(userfilename);					
+			}
+			
+			int bno = Integer.parseInt(multi.getParameter("bno"));
+			String title = multi.getParameter("title");
+			String content = multi.getParameter("content");
+		
+			//String sid = (String) sst.getAttribute("sbsession");
+			//DB에 저장
 			Board b = new Board();
 			b.setTitle(title);
 			b.setContent(content);
+			b.setFilename(filename);
 			b.setBno(bno);
-			bdao.updateboard(b);
+			//파일 유무에 따른처리
+			if(filename != null) {
+				bdao.updateboard(b);
+			}else {
+				bdao.updatenofileboard(b);
+			}
 			nextPage="/boardlist.do";
+			
+		}else if(command.equals("/like.do")) {
+			int bno = Integer.parseInt(request.getParameter("bno"));
+			String id = request.getParameter("id");
+			Voter v = new Voter();
+			
+			v.setBno(bno);
+			v.setMid(id);
+			//좋아요 저장 유무체크
+			int result = vdao.checkvoter(bno,id);
+			if(result == 0) {
+				vdao.insertvote(v); //좋아요 추가
+			}else{ 
+				vdao.deletevote(v);
+			}
+			//좋아요삭제
+			//vdao.deletevote();
+			
+	
 		}
 		 if(command.equals("/insertreply.do")) {
 			String rcontent= request.getParameter("rcontent");
@@ -280,7 +378,8 @@ public class Maincontroller extends HttpServlet {
 				//새로고침 중복생성 문제해결
 				response.sendRedirect("/boardlist.do");
 				
-			}else if(command.equals("/insertreply.do") || command.equals("/deletereply.do")) {
+			}else if(command.equals("/insertreply.do") || command.equals("/deletereply.do")
+					|| command.equals("/like.do")) {
 				int bno =Integer.parseInt(request.getParameter("bno"));
 				response.sendRedirect("/boardview.do?bno="+bno);
 			}

@@ -6,16 +6,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글상세보게</title>
+<title>글상세보기</title>
 <link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
-  <c:if test="${empty sbsession}">
+<!--   <c:if test="${empty sbsession}">
   <script type="text/javascript">
   alert('로그인이필요합니다.');
   location.href="/loginform.do";
   </script>
-  </c:if>
+  </c:if> -->
  <jsp:include page="../header.jsp" />
  <div id="container">
    <section id="boardview">
@@ -27,9 +27,66 @@
           <td><input type="text" name="title" value="${bb1.title}" readonly></td>
           </tr>      
           <tr>
-          <td><textarea rows="7" cols="100" name="content" readonly>${bb1.content}</textarea></td>
-          </tr>      
+             <td>
+             <div>
+             <c:if test="${not empty bb1.filename }">
+             <img src="../upload/${bb1.filename}" alt="">
+             </c:if>
+             </div>
+             ${bb1.content}
+              </td>
+          </tr>
+            <tr>
+               <td>
+                  조회수: ${bb1.hit}&nbsp;&nbsp;&nbsp;&nbsp;
+                  <!-- 좋아요 영역 -->
+                  <c:choose>
+                   <c:when test="${empty sbsession}">
+                    <span><i class="fa-solid fa-heart" style="color:#000"></i></span>
+                     <span>${votecount}</span>
+                       <a href="#" onclick="location.href='/loginform.do'">(좋아요는 로그인이 필요합니다)</a>
+                   </c:when>
+                  <c:otherwise>
+                  <c:choose>
+                    <c:when test="${sw eq true }">
+                    <span>
+                   <a href="/like.do?bno=${bb1.bno}&id=${sbsession}">
+                   <i class="fa-regular fa-heart" style="color:#f00"></i>
+                   </a>
+                   </span>
+                   <span>${votecount}</span>
+                    </c:when>
+                    <c:otherwise>
+                    <span>
+                   <a href="/like.do?bno=${bb1.bno}&id=${sbsession}">
+                   <i class="fa-solid fa-heart" style="color:#f00"></i>
+                   </a>
+                   </span>
+                   <span>${votecount}</span>
+                    </c:otherwise>
+                   </c:choose>   
+                                                  
+                  </c:otherwise>                                    
+                  </c:choose>
+                  
+               </td>
+              </tr>      
+           <tr>
+           <td>
+           <c:choose>
+            <c:when test="${not empty bb1.filename}">
+             ${bb1.filename}<a href="filedown.do?filename=${bb1.filename}">[다운로드]</a>
+           
+            </c:when>
           
+           <c:otherwise>
+            <c:out value="첨부파일:" />
+          </c:otherwise>
+           
+             </c:choose>
+            </td>
+              
+           </tr>
           <tr>
            <td>
            <c:if test="${sbsession eq bb1.memid}">

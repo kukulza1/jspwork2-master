@@ -4,12 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>인덱스페이지입니다</title>
-<link rel="stylesheet" href="resource/css/style.css">
+<title>인덱스페이지</title>
+<link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
-  <script>
-       location.href="buyend.do";
+   <div id="container">
+   <script>
+       location.href="buyList.do";
    </script>
+   </div>
 </body>
 </html>

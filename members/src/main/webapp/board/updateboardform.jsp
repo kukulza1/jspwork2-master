@@ -14,7 +14,7 @@
  <div id="container">
    <section id="writeform">
     <h2>게시글수정</h2>
-    <form action="/updateboard.do" method="post">
+    <form action="/updateboard.do" method="post" enctype="multipart/form-data">
     <!-- ui를 만들지않고 데이터만 숨겨서 보낼때사용 -->
      <input type="hidden" name="bno" value="${b.bno}">
     <table>
@@ -28,8 +28,12 @@
               placeholder="글내용">${b.content}</textarea></td>
           </tr>
           <tr>
+           <td><input type="file" name="filename" value="${b.filename}"></td>
+          </tr>
+          <tr>
            <td>
             <button type="submit">저장</button>
+            
             <button type="reset">취소</button>
            </td>
           </tr>
