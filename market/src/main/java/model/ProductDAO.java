@@ -109,6 +109,78 @@ public class ProductDAO {
 		}				
 		return p;
 	}
+	
+    public void deleteproduct(String pid) {
+    	conn = JDBCUtil.getConnection();
+    	
+    	String sql = "delete from product where pid= ? ";
+		try {
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, pid);				
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt);
+		}	
+		
+		
+    }
 
+	public void updatep(Product p) {
+    conn = JDBCUtil.getConnection();
+
+    	String sql = "update  product set  pname = ?, price = ? , p_description = ? , p_category = ?,"
+    			+ " p_stock = ? , p_condition = ? , p_image = ? "
+    			+ " where pid= ? ";
+		try {
+			
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, p.getPname());
+			pstmt.setInt(2, p.getPrice());
+			pstmt.setString(3, p.getDescription());
+			pstmt.setString(4, p.getCategory());
+			pstmt.setLong(5, p.getStock());
+			pstmt.setString(6, p.getCondition());
+			pstmt.setString(7, p.getPimage());
+			pstmt.setString(8, p.getPid());				
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt);
+		}	
+		
+	}
+	
+	public void updatepNoimg(Product p) {
+		conn = JDBCUtil.getConnection();
+
+		    	String sql = "update  product set  pname = ?, price = ? , p_description = ? , p_category = ?,"
+		    			+ " p_stock = ? , p_condition = ? "
+		    			+ " where pid= ? ";
+				try {
+					
+					pstmt=conn.prepareStatement(sql);
+					
+				
+					pstmt.setString(1, p.getPname());
+					pstmt.setInt(2, p.getPrice());
+					pstmt.setString(3, p.getDescription());
+					pstmt.setString(4, p.getCategory());
+					pstmt.setLong(5, p.getStock());
+					pstmt.setString(6, p.getCondition());
+				
+					pstmt.setString(7, p.getPid());				
+					pstmt.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}finally {
+					JDBCUtil.close(conn, pstmt);
+				}	
+				
+			}
 
 }
