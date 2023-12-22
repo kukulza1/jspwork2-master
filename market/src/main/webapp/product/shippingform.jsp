@@ -11,27 +11,26 @@
 <%@ include file="../header.jsp" %>
 <div class ="row">
 <h2>배송정보</h2>
-<form action="/shippinginfo.do" method="post" enctype="multipart/form-data"
-       name="newp">
-
+<form action="/shippinginfo.do" method="post" >
+<input type="hidden" name="cartid" value="${cartid}">
    <div class="form-group row my-3">
       <label class="col-2">성명</label>
       <div class="col-3">
-      <input type="text" id="pid" name="sname" class="form-control">
+      <input type="text"  name="sname" class="form-control">
       </div>
    </div>
    
    <div class="form-group row my-3">
       <label class="col-2">배송일</label>
       <div class="col-3">
-      <input type="text" id="pname" name="sdate" class="form-control">
+      <input type="text"  name="sdate" class="form-control">
       </div>
    </div>
    
    <div class="form-group row my-3">
       <label class="col-2">우편번호</label>
       <div class="col-3">
-      <input type="text" id="price" name="zipcode" class="form-control">
+      <input type="text"  name="zipcode" class="form-control">
       </div>
    </div>
    
@@ -49,7 +48,7 @@
    <div class="form-group row my-3">
     
       <div class="col-3">
-       <input type="submit" value="등록" onclick="checkproduct()">
+       <input type="submit" value="등록" >
       </div>
    </div>
 

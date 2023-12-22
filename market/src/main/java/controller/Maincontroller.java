@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +41,8 @@ public class Maincontroller extends HttpServlet {
 		
 		HttpSession sst = request.getSession();
 		String nextpage = "";
+		
+		
 		if(command.equals("/main.do")) {
 			
 			nextpage="/main.jsp";
@@ -203,10 +208,10 @@ public class Maincontroller extends HttpServlet {
 					break;
 				}
 			}
-			List<Product> list= (ArrayList<Product>) sst.getAttribute("cartlist");
+			List<Product> list= (ArrayList<Product>) sst.getAttribute("cartlist"); //세션유지용 부여
 			if(list == null) {
-				list = new ArrayList<>();
-				sst.setAttribute("cartlist", list);
+				list = new ArrayList<>(); //어레이 리스트로 사용
+				sst.setAttribute("cartlist", list); //세션생성
 			}
 			
 			//요청 아이디의 상품이 기존에 장바구니에 있으면 수량을 1로정함
@@ -221,7 +226,7 @@ public class Maincontroller extends HttpServlet {
 			  goodsQnt.setQuantity(goodsQnt.getQuantity()+1);
 				}
 			}
-			//기존에 장바구니에 없는 품몽은 수량을 1로정함
+			//기존에 장바구니에 없는 품목은 수량을 1로정함
 			if(cnt ==0) {
 				goods.setQuantity(1);
 				list.add(goods);
@@ -266,11 +271,128 @@ public class Maincontroller extends HttpServlet {
 			}
 			
 		}else if(command.equals("/shippingform.do")) {
-			request.getParameter("cartid");
+		 String cartid = sst.getId();
+			
+			request.setAttribute("cartid", cartid);
 			
 			nextpage="/product/shippingform.jsp";
-		}else if(command.equals("/shippinginfo.do")) {
+		}else if(command.equals("/shippinginfo.do")){
 			
+			Cookie shiid = new Cookie("shipping_shiid", 
+					 URLEncoder.encode(request.getParameter("cartid"),"utf-8"));
+			Cookie sname = new Cookie("shipping_sname", 
+					 URLEncoder.encode(request.getParameter("sname"),"utf-8"));
+			Cookie sdate = new Cookie("shipping_sdate", 
+					 URLEncoder.encode(request.getParameter("sdate"),"utf-8"));
+			Cookie zipcode = new Cookie("shipping_zipcode", 
+					 URLEncoder.encode(request.getParameter("zipcode"),"utf-8"));
+			Cookie address = new Cookie("shipping_address", 
+					 URLEncoder.encode(request.getParameter("address"),"utf-8"));
+		
+			sname.setMaxAge(24*60*60);
+			shiid.setMaxAge(24*60*60);
+			zipcode.setMaxAge(24*60*60);
+			address.setMaxAge(24*60*60);
+			sdate.setMaxAge(24*60*60);
+
+			
+			response.addCookie(sname);
+			response.addCookie(shiid);
+			response.addCookie(zipcode);
+			response.addCookie(address);
+			response.addCookie(sdate);
+			
+			//쿠키정보를 가져와서 
+			
+			String shipping_sname = "";
+			String shipping_shiid = "";
+			String shipping_zipcode = "";
+			String shipping_address = "";
+			String shipping_sdate = "";
+			
+			Cookie[] cookies = request.getCookies();
+			if(cookies != null) {
+				for(int i=0; i<cookies.length; i++) {
+					Cookie cookie = cookies[i];  //인덱스별로 쿠키를 생성
+					String cname = cookie.getName(); //쿠키이름 가져옴
+					//한글 복호화(디코딩 문자열로 변환)
+					
+					if(cname.equals("shipping_sname")) 
+						shipping_sname = URLDecoder.decode(cookie.getValue(),"utf-8");
+					
+					if(cname.equals("shipping_shiid")) 
+						shipping_shiid = URLDecoder.decode(cookie.getValue(),"utf-8");
+					
+					if(cname.equals("shipping_zipcode")) 
+						shipping_zipcode = URLDecoder.decode(cookie.getValue(),"utf-8");
+					
+					if(cname.equals("shipping_address")) 
+						shipping_address = URLDecoder.decode(cookie.getValue(),"utf-8");
+					
+					if(cname.equals("shipping_sdate")) 
+						shipping_sdate = URLDecoder.decode(cookie.getValue(),"utf-8");
+				}
+			}
+			int sum = 0; //모든상품총합계
+			int unit_sum = 0; //품목별 합계 = 가격*수량
+			List<Product> cartlist= (ArrayList<Product>) sst.getAttribute("cartlist");
+			for(int i=0; i<cartlist.size(); i++) {
+				Product product = cartlist.get(i);
+				unit_sum = product.getPrice()* product.getQuantity();
+				
+				sum+= unit_sum;
+			}
+			//모델로만들기
+			request.setAttribute("shipping_sname", shipping_sname);
+			request.setAttribute("shipping_shiid", shipping_shiid);
+			request.setAttribute("shipping_zipcode", shipping_zipcode);
+			request.setAttribute("shipping_address", shipping_address);
+			request.setAttribute("shipping_sdate", shipping_sdate);
+			
+			request.setAttribute("sum", sum);
+			
+			nextpage="/product/orderconfirm.jsp";
+			
+		}else if(command.equals("/thankscustomer.do")) {
+			
+			String shipping_shiid = "";
+			String shipping_sdate = "";
+		
+			Cookie[] cookies = request.getCookies();
+			if(cookies != null) {
+				for(int i=0; i<cookies.length; i++) {
+					Cookie cookie = cookies[i]; 
+					String cname = cookie.getName(); 
+														
+					if(cname.equals("shipping_shiid")) 
+						shipping_shiid = URLDecoder.decode(cookie.getValue(),"utf-8");				
+					
+					if(cname.equals("shipping_sdate")) 
+						shipping_sdate = URLDecoder.decode(cookie.getValue(),"utf-8");
+					
+				}
+				
+				request.setAttribute("shipping_shiid", shipping_shiid);
+				request.setAttribute("shipping_sdate", shipping_sdate);
+			    sst.invalidate();
+				if(cookies != null) {
+					for(int i=0; i<cookies.length; i++) {
+						Cookie cookie = cookies[i]; 
+						String cname = cookie.getName(); 
+						if(cname.equals("shipping_sname")) 
+							cookie.setMaxAge(0);
+						if(cname.equals("shipping_shiid")) 
+							cookie.setMaxAge(0);
+						if(cname.equals("shipping_zipcode")) 
+							cookie.setMaxAge(0);
+						if(cname.equals("shipping_address")) 
+							cookie.setMaxAge(0);
+						if(cname.equals("shipping_sdate")) 
+							cookie.setMaxAge(0);							
+					}
+				}
+			nextpage="/product/thankscustomer.jsp";
+		}
 		}
 		
 		if(command.equals("/insertproduct.do")) {

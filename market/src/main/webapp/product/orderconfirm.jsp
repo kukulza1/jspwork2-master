@@ -6,34 +6,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>장바구니</title>
-<link rel="stylesheet" href="../resources/css/style.css">
-<script>
- function addToCart(){
-	 if(confirm("상품을 주문하시겠습니까?")){
-		 document.addform.submit();
-	 }else{
-		 document.addform.reset();
-	 }
- }
+<title>주문내역</title>
 
-</script>
 </head>
 <body>
 <%@ include file="../header.jsp" %>
 <div class ="container my-3">
-<h2>장바구니</h2>
- <div class="row">
-   <table>
-      <tr>
-       <td align="left">
-       <a href="/deletecart.do" class="btn btn-danger">삭제하기</a></td>
-       <td align="right">
-       <!-- 장바구니 주문이므로 카트아이디를 전달해줌 -->
-       <a href="/shippingform.do?cartid=${cartid}" class="btn btn-success">주문하기</a></td>     
-      </tr>
-   </table>
-   <!-- 장바구니 품목 -->
+<h2>주문내역</h2>
+ <div class="row my-3">
+  <div class="col-4" align="left">
+    배송주소<br>
+    성명: ${shipping_sname }
+    우편번호: ${shipping_zipcode }
+    주소: ${shipping_address }
+    
+ </div>
+ <div class="col-8" align="right">
+   배송일:${shipping_sdate }
+ </div>
+   
  
      <table class="table table-hover my-3 px-3">
         <thead>
@@ -67,6 +58,7 @@
            </tr>
         </tfoot>
      </table>
+     <p class="text-center"><a href="/thankscustomer.do" class="btn btn-success">주문완료</a></p>
    
 </div>
 </div>

@@ -72,8 +72,8 @@
      </c:if>
       <c:if test="${product.condition eq 'old'}">
    
-     <label> <input type="radio" name="condition" value="new" checked>신상품</label>
-       <label> <input type="radio" name="condition" value="old">중고품</label>
+     <label> <input type="radio" name="condition" value="new" >신상품</label>
+       <label> <input type="radio" name="condition" value="old" checked>중고품</label>
      </c:if>
       </div>
    </div>
