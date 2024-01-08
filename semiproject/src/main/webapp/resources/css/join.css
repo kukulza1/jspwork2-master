@@ -25,24 +25,31 @@ a:hover {
     cursor: pointer;
 }
 
-/* #mid */
+/* ==================================mid=========================== /
+/ #mid */
 #mid {
-    background-color: #fff;
-    margin: 30px;
-    margin-bottom: 0;
-    padding-bottom: 50px;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
-#mid h3 {
-    padding: 50px;
-    text-align: center;
-    background-color: #ffa;    
+.mid_h3 {
+    height: 150px;
+    width: 100%;
+    background: #edfed6;
+    display: flex;
+    align-items: center;
 }
 
 #mid_form {
+
     margin: 0;
     padding: 50px 100px;
-    width: 100%;
+    width: 1100px;
 }
 
 #mid fieldset {
@@ -120,20 +127,16 @@ table tr span {
     text-align: center;
 }
 
-button {
-    text-align: center;
+.btnbox button {
     padding: 10px;
-    margin: 5px 20px;
-    font-size: 1.2rem;
-    border: 1px solid #fff;
-    border-radius: 10px;
-    box-shadow: 0px 5px 5px #ccc;
+    border-radius: 5px;
 }
 
+
 .join_btn {
-    background: #ffa;
+    background: #edfed6;
 }
 
 .reset_btn {
-    background: #ffd;
+    background: #B1CE57;
 }

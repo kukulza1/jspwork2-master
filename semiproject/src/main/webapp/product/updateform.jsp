@@ -8,6 +8,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"/>
+	<jsp:include page="../navbar.jsp" />
 	<div id="container">
 		<section id="">
 		<h2>상품 수정</h2>

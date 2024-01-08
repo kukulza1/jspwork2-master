@@ -166,7 +166,7 @@
       
       
       
-      <Context docBase="market" path="/" reloadable="false" source="org.eclipse.jst.jee.server:market"/></Host>
+      <Context docBase="semiproject" path="/" reloadable="false" source="org.eclipse.jst.jee.server:semiproject"/></Host>
     </Engine>
   </Service>
 </Server>
